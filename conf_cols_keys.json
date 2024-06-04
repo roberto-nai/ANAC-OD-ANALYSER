@@ -1,0 +1,21 @@
+{
+    "aggiudicatari_csv.csv": ["cig", "id_aggiudicazione", "codice_fiscale"],
+    "aggiudicazioni_csv.csv": ["cig", "id_aggiudicazione"],
+    "attestazioni-soa_csv.csv": ["num_attestazione", "cod_categoria", "classifica"],
+    "avvio-contratto_csv.csv": ["cig", "id_aggiudicazione"],
+    "bando_cig_2007-2023_clean.csv": ["cig"],
+    "bandi-cig-modalita-realizzazione_csv.csv": ["modalita-realizzazione_codice"],
+    "bandi-cig-tipo-scelta-contraente_csv.csv": ["tipo-scelta-contraente_codice"],
+    "categorie-opera_csv.csv": ["cig", "id_categoria", "cod_tipo_categoria"],
+    "centri-di-costo_csv.csv": ["id_centro_di_costo"],
+    "collaudo_csv.csv": ["cig", "id_aggiudicazione"],
+    "fine-contratto_csv.csv": ["cig", "id_aggiudicazione"],
+    "misurepremiali-pnrrpnc_csv.csv": ["cig"],
+    "pubblicazioni_csv.csv": ["cig"],
+    "quadro-economico_csv.csv": ["cig", "id_aggiudicazione", "descrizione_evento", "dettaglio_evento"],
+    "sospensioni_csv.csv": ["cig", "id_aggiudicazione", "data_sospensione", "descrizione_motivo"],
+    "stati-avanzamento_csv.csv": ["cig", "id_aggiudicazione", "progressivo_sal"],
+    "stazioni-appaltanti_csv.csv": ["codice_fiscale"],
+    "subappalti_csv.csv": ["cig", "id_subappalto", "cod_categoria", "codice_fiscale"],
+    "varianti_csv.csv": ["cig", "id_aggiudicazione", "id_variante", "cod_motivo_variante", "data_approvazione_variante"]
+}

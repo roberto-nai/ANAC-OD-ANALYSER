@@ -1,0 +1,17 @@
+# config.yml
+
+OD_DIR: open_data
+OD_FILE_TYPE: csv
+OD_FILE_SEP: ;
+OD_STATS_DIR: stats                           # OUTPUT directory
+CONF_COLS_EXCL_FILE: conf_cols_excluded.json  # INPUT file with columns to be excluded for each CSV file (dataset)
+CONF_PRIMARY_KEYS_FILE: conf_cols_keys.json
+CONF_FOREIGN_KEYS_FILE: conf_cols_foreign_keys.json
+STATS_DIR: stats
+SQL_DIR_TABLES: sql_tables
+SQL_DROP_TABLE: True
+SQL_DIR_DB: sql_db
+SQL_DB_NAME: anac_db_catalogue
+SQL_DROP_DB: True
+SQL_FILE_TYPE: sql
+BASH_SCRIPT_FILE: cat_sql.sh                
