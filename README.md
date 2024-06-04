@@ -5,21 +5,16 @@
 ### > Directories
 
 #### config
-Configuration directory with ```config.yml```
-- [ ] Define the starting/ending years to download ```YEAR_START_DOWNLOAD``` and ```YEAR_END_DOWNLOAD```
-- [ ] Define the starting dataset to filter in ```ANAC_OD_FILE``` (it contains the ```bando_cig_*``` merged files from dynamic URLs)
-- [ ] Define the starting/ending years to filter in ```YEAR_START_FILTER``` and ```YEAR_END_FILTER```
-- [ ] Define the region to filter in ```ANAC_OD_REGION``` following ANAC region names
-- [ ] Define the region output name ```ANAC_OD_REGION_OUT``` (convenience name for next use)
+Configuration directory with ```config.yml```.  
 
-#### data
-Directory with filtered data starting from the one downloaded.
+#### open_data
+Directory with downloaded ANAC Open Data Catalogue (see this project: [https://github.com/roberto-nai/ANAC-OD-DOWNLOADER](https://github.com/roberto-nai/ANAC-OD-DOWNLOADER)).
 
-#### download
-Directory with download files from ANAC (zip and csv). 
+#### sql_db
+Directory with SQL file with all table definitions (merged from ```sql_tables```).   
 
-#### pa_registry
-Directory with PA registry (for PA type); source: [https://openbdap.rgs.mef.gov.it](https://openbdap.rgs.mef.gov.it)
+#### sql_tables
+Directory with SQL file with single table definition.   
 
 #### stats
 Directory with procurements stats.
@@ -27,22 +22,22 @@ Directory with procurements stats.
 #### utility_manager
 Directory with utilities functions.
 
-### > Files
+### > Script Execution
 
-#### ```01_anac_od_download.py```
-Application to download public notices (tenders) from the ANAC website and create a global dataset.
+#### ```01_data_analyser.py```
+Application to analyse the dataset.
 
-#### ```02_anac_od_select.py```
-Application to select ANAC Open Data of interest from the global dataset.
+#### ```02_data_sql.py```
+Application create a SQL database in ```sql_db```.
 
-#### ```anac_regions.json```
-List of regions according to ANAC nomenclature and filtering convenience name.
+#### ```conf_cols_excluded.json```
+List of columns (features) to be ignored.
 
-#### ```anac_dynamic_urls.json```
-List of dynamic URLs (files) to download; source [https://dati.anticorruzione.it/opendata](https://dati.anticorruzione.it/opendata)
+#### ```conf_cols_foreign_keys.json```
+List of columns (features) to be used as foreign keys.
 
-#### ```anac_static_urls.json```
-List of static URLs (files) to download; source [https://dati.anticorruzione.it/opendata](https://dati.anticorruzione.it/opendata)
+#### ```conf_cols_keys.json```
+List of columns (features) to be used as primary keys.  
 
-#### ``ssl_adapter.py``
-Class to execute requests via HTTPS.
+### > Script Dependencies
+See ```requirements.txt``` for the required libraries (```pip install -r requirements.txt```).  
