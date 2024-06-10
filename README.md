@@ -29,7 +29,7 @@ Directory with utilities functions.
 Application to analyse the dataset.
 
 #### ```02_data_sql.py```
-Application create a SQL database in ```sql_db```.
+Application create a database script in ```SQL_DIR_DB``` following the JSON configuration files for PK, FK, column types and table names in English. At the end of the process, the SQL file in ```SQL_DIR_DB``` contains the complete database structure.  
 
 #### ```conf_cols_excluded.json```
 List of columns (features) to be ignored.

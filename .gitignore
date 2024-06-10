@@ -163,8 +163,6 @@ cython_debug/
 _old/
 _todo/
 open_data_anac/
-open_data_bdap/
-open_data_istat/
 sql_db/
 sql_tables/
 stats/
@@ -172,16 +170,12 @@ stats/
 
 # Ignore every file the directory
 open_data_anac/*
-open_data_bdap/*
-open_data_istat/*
 sql_db/*
 sql_tables/*
 stats/*
 
 # But do not ignore the directory itself
 !open_data_anac/.gitkeep
-!open_data_bdap/.gitkeep
-!open_data_istat/.gitkeep
 !sql_db/.gitkeep
 !sql_tables/.gitkeep
 !stats/.gitkeep

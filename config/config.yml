@@ -29,10 +29,10 @@ CONF_COLS_STATS_FILE: conf_cols_stats_included.json   # INPUT file with columns 
 CONF_TABLES_ENG: conf_tables_eng.json                 # INPUT file with table names in ITA to ENG 
 
 # SQL
+SQL_DIR_DB: sql_db                                    # Final SQL file with DB and TABLES creation
+SQL_DB_NAME: anac_db_catalogue                        # SCHEMA name
 SQL_DIR_TABLES: sql_tables
 SQL_DROP_TABLE: True
-SQL_DIR_DB: sql_db
-SQL_DB_NAME: anac_db_catalogue
 SQL_DROP_DB: True
 SQL_FILE_TYPE: sql
 
