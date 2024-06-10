@@ -1,17 +1,40 @@
 # config.yml
 
-OD_DIR: open_data
+CSV_FILE_SEP: ;
 OD_FILE_TYPE: csv
-OD_FILE_SEP: ;
-OD_STATS_DIR: stats                           # OUTPUT directory
-CONF_COLS_EXCL_FILE: conf_cols_excluded.json  # INPUT file with columns to be excluded for each CSV file (dataset)
-CONF_PRIMARY_KEYS_FILE: conf_cols_keys.json
-CONF_FOREIGN_KEYS_FILE: conf_cols_foreign_keys.json
-STATS_DIR: stats
+
+# ANAC
+OD_ANAC_DIR: open_data_anac
+TENDER_MAIN_TABLE: bando_cig_2007-2023_clean.csv      # INPUT the main dataset                
+
+# ISTAT
+OD_ISTAT_DIR: open_data_istat
+OD_ISTAT_NUTS_FILE: istat_nuts.csv
+OD_ISTAT_DIM_FILE: istat_dimensions.csv
+# Fix Column names                                    # INPUT columns to be renamed
+OD_ISTAT_COLUMNS_FIX:
+  "Codice Istat del Comune (alfanumerico)": codice_istat_comune
+  "Codice Comune formato alfanumerico": codice_istat_comune
+
+# BDAP
+OD_BDAP_DIR: open_data_bdap
+OD_BDAP_FILE: Anagrafe-Enti---Ente.csv
+
+# CONFIGURATIONS
+CONF_COLS_EXCL_FILE: conf_cols_read_excluded.json     # INPUT file with columns to be excluded from reading of each CSV file (dataset)
+CONF_COLS_TYPE_FILE: conf_cols_type.json              # INPUT file with columns types for each CSV file (dataset)
+CONF_PRIMARY_KEYS_FILE: conf_cols_primary_keys.json   # INPUT file with columns primary keys for each CSV file (dataset)
+CONF_FOREIGN_KEYS_FILE: conf_cols_foreign_keys.json   # INPUT file with columns foreign keys for each CSV file (dataset)
+CONF_COLS_STATS_FILE: conf_cols_stats_included.json   # INPUT file with columns to be included in stats for each CSV file (dataset)
+CONF_TABLES_ENG: conf_tables_eng.json                 # INPUT file with table names in ITA to ENG 
+
+# SQL
 SQL_DIR_TABLES: sql_tables
 SQL_DROP_TABLE: True
 SQL_DIR_DB: sql_db
 SQL_DB_NAME: anac_db_catalogue
 SQL_DROP_DB: True
 SQL_FILE_TYPE: sql
-BASH_SCRIPT_FILE: cat_sql.sh                
+
+# STATS
+OD_STATS_DIR: stats                                   # OUTPUT directory

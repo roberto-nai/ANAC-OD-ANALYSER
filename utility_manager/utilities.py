@@ -21,6 +21,24 @@ def json_to_list_dict(json_file: str) -> list:
     
     return sorted_key_value_pairs
 
+def json_to_sorted_dict(json_file: str) -> dict:
+    """
+    Extracts and sorts key-value pairs from a JSON file alphabetically by the keys.
+
+    Parameters:
+        json_file (str): The path to the JSON file.
+
+    Returns:
+        dict: A dictionary containing key-value pairs extracted and sorted from the JSON file.
+    """
+    # Load JSON data from file
+    with open(json_file, 'r') as file:
+        data = json.load(file)
+    
+    # Sort key-value pairs alphabetically by keys and return as a single dictionary
+    sorted_key_value_pairs = {key: data[key] for key in sorted(data.keys())}
+    
+    return sorted_key_value_pairs
 
 def check_and_create_directory(dir_name:str, dir_parent:str="") -> None:
     """
@@ -150,7 +168,11 @@ def df_to_sql_create_table_query(df: pd.DataFrame, drop_table: bool, primary_key
     for column, dtype in df.dtypes.items():
         mysql_dtype = type_mapping.get(str(dtype), 'VARCHAR(255)')  # Default to VARCHAR(255) if type is unknown
         # Add column and type to the definition list
-        column_definitions.append(f"  `{column}` {mysql_dtype}")
+        # column_definitions.append(f"  `{column}` {mysql_dtype}")
+        if column in primary_keys:
+            column_definitions.append(f"  `{column}` {mysql_dtype} NOT NULL")
+        else:
+            column_definitions.append(f"  `{column}` {mysql_dtype} NULL")
     
     # Join all column definitions into a single string
     query += ",\n".join(column_definitions)
@@ -170,7 +192,7 @@ def df_to_sql_create_table_query(df: pd.DataFrame, drop_table: bool, primary_key
     
     return query
 
-def df_read_csv(dir_name: str, file_name: str, list_col_exc: list, nrows:int, csv_sep: str = ";") -> pd.DataFrame:
+def df_read_csv(dir_name: str, file_name: str, list_col_exc: list, list_col_type:dict, nrows:int, csv_sep: str = ";") -> pd.DataFrame:
     """
     Reads data from a CSV file into a pandas DataFrame excluding columns (if needed)
 
@@ -178,21 +200,18 @@ def df_read_csv(dir_name: str, file_name: str, list_col_exc: list, nrows:int, cs
         dir_name (str): the directory to the CSV file to be read.
         file_name (str): the filename to the CSV file to be read.
         list_col_exc (list): columns to be excluded.
+        list_col_type (dict): columns type.
         nrows (int): rows to be read (if None, all).
         sep (str, optional): the delimiter string used in the CSV file. Defaults to ';'.
 
     Returns:
         pd.DataFrame: a pandas DataFrame containing the data read from the CSV file.
     """
-    dic_t = {"cig":object, "cf_soa":object, "codice_fiscale":object, "id_centro_di_costo":object, 
-             "cf_amministrazione_appaltante":object, "cf_subappaltante":object, "cf_impresa":object, "enteRilcertQualita":object, "certificazioneDiQualitaScadenza":object, 
-             "id_aggiudicazione":int, "id_categoria":object, "cod_tipo_categoria":object,
-             "criterio_aggiudicazione":object}
     path_data = Path(dir_name) / file_name
     if nrows is not None:
-        df = pd.read_csv(path_data, sep=csv_sep, dtype=dic_t, nrows=nrows, low_memory=False)
+        df = pd.read_csv(path_data, sep=csv_sep, dtype=list_col_type, nrows=nrows, low_memory=False)
     else:
-        df = pd.read_csv(path_data, sep=csv_sep, dtype=dic_t, low_memory=False)
+        df = pd.read_csv(path_data, sep=csv_sep, dtype=list_col_type, low_memory=False)
     if len(list_col_exc) > 0:
         for col_name in list_col_exc:
                 if col_name in df.columns:

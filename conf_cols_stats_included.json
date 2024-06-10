@@ -1,0 +1,12 @@
+{
+    "bando_cig_2016-2023.csv":["oggetto_principale_contratto", "accordo_quadro", "stato", "settore", "cod_tipo_scelta_contraente", "tipo_scelta_contraente", "cod_modalita_realizzazione", "modalita_realizzazione", "sezione_regionale", "anno_pubblicazione", "cpv_division", "flag_prevalente"],
+    "aggiudicatari_csv.csv":["ruolo", "tipo_soggetto"],
+    "aggiudicazioni_csv.csv":["criterio_aggiudicazione"],
+    "categorie-opera_csv.csv": ["id_categoria", "descrizione", "cod_tipo_categoria", "descrizione_tipo_categoria"],
+    "collaudo_csv.csv": ["esito_collaudo"],
+    "fine-contratto_csv.csv": ["cod_motivo_risoluzione", "motivo_risoluzione", "cod_motivo_interruzione_anticipata", "motivo_interruzione_anticipata"],
+    "sospensioni_csv.csv": ["descrizione_motivo"],
+    "stazioni-appaltanti_csv.csv": ["natura_giuridica_codice", "natura_giuridica_descrizione"],
+    "subappalti_csv.csv": ["cod_categoria", "descrizione_categoria"],
+    "varianti_csv.csv": ["cod_motivo_variante", "motivo_variante"]
+}

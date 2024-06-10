@@ -3,7 +3,7 @@
     "aggiudicazioni_csv.csv": ["cig", "id_aggiudicazione"],
     "attestazioni-soa_csv.csv": ["num_attestazione", "cod_categoria", "classifica"],
     "avvio-contratto_csv.csv": ["cig", "id_aggiudicazione"],
-    "bando_cig_2007-2023_clean.csv": ["cig"],
+    "bando_cig_2016-2023.csv": ["cig"],
     "bandi-cig-modalita-realizzazione_csv.csv": ["modalita-realizzazione_codice"],
     "bandi-cig-tipo-scelta-contraente_csv.csv": ["tipo-scelta-contraente_codice"],
     "categorie-opera_csv.csv": ["cig", "id_categoria", "cod_tipo_categoria"],
@@ -17,5 +17,8 @@
     "stati-avanzamento_csv.csv": ["cig", "id_aggiudicazione", "progressivo_sal"],
     "stazioni-appaltanti_csv.csv": ["codice_fiscale"],
     "subappalti_csv.csv": ["cig", "id_subappalto", "cod_categoria", "codice_fiscale"],
-    "varianti_csv.csv": ["cig", "id_aggiudicazione", "id_variante", "cod_motivo_variante", "data_approvazione_variante"]
+    "varianti_csv.csv": ["cig", "id_aggiudicazione", "id_variante", "cod_motivo_variante", "data_approvazione_variante"],
+    "istat_aree_geo.csv": ["codice_istat_comune"],
+    "istat_dimensioni.csv": ["codice_istat_comune"],
+    "bdap_enti.csv": ["CF"]
 }
