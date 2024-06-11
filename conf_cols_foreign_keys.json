@@ -15,5 +15,5 @@
     "centri_di_costo": [{"stazione_appaltante_codice_fiscale":"stazioni_appaltanti.codice_fiscale"}],
     "attestazioni_soa": [{"cf_impresa": "aggiudicatari.codice_fiscale"}],
     "categorie_opera": [{"cig":"bando_cig_2016_2023.cig"}], 
-    "stazioni_appaltanti": [{"citta_codice":"istat_aree_geo.codice_istat_comune", "citta_codice":"istat_dimensioni.codice_istat_comune", "codice_fiscale":"bdap_enti.CF"}]
+    "stazioni_appaltanti": [{"citta_codice":"istat_aree_geo.codice_istat_comune", "citta_codice":"istat_dimensioni.codice_istat_comune", "codice_fiscale":"bdap_enti.cf_comune"}]
 }

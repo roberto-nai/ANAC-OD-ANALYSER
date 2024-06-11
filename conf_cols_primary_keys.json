@@ -20,5 +20,5 @@
     "varianti_csv.csv": ["cig", "id_aggiudicazione", "id_variante", "cod_motivo_variante", "data_approvazione_variante"],
     "istat_aree_geo.csv": ["codice_istat_comune"],
     "istat_dimensioni.csv": ["codice_istat_comune"],
-    "bdap_enti.csv": ["CF"]
+    "bdap_enti.csv": ["cf_comune"]
 }

@@ -23,10 +23,11 @@ od_anac_dir = str(yaml_config["OD_ANAC_DIR"])
 
 # ISTAT data
 od_istat_dir = str(yaml_config["OD_ISTAT_DIR"])
-dic_columns_fix = dict(yaml_config["OD_ISTAT_COLUMNS_FIX"]) 
+dic_istat_columns_fix = dict(yaml_config["OD_ISTAT_COLUMNS_FIX"]) 
 
 # BDAP data
 od_bdap_dir = str(yaml_config["OD_BDAP_DIR"])
+dic_bdap_columns_fix = dict(yaml_config["OD_BDAP_COLUMNS_FIX"]) 
 
 conf_file_cols_exc = str(yaml_config["CONF_COLS_EXCL_FILE"]) # JSON
 conf_file_cols_type = str(yaml_config["CONF_COLS_TYPE_FILE"]) # JSON
@@ -164,8 +165,8 @@ def main():
 
     print(">> Creating SQL files")
     process_files_to_sql(od_anac_dir, list_od_files, list_col_exc_dic, list_col_type_dic, None, sql_drop_table, list_primary_key_dic, sql_dir_tables, csv_sep)
-    process_files_to_sql(od_istat_dir, list_istat_files, list_col_exc_dic, list_col_type_dic, dic_columns_fix, sql_drop_table, list_primary_key_dic, sql_dir_tables, csv_sep)
-    process_files_to_sql(od_bdap_dir, list_bdap_files, list_col_exc_dic, list_col_type_dic, dic_columns_fix, sql_drop_table, list_primary_key_dic, sql_dir_tables, csv_sep)
+    process_files_to_sql(od_istat_dir, list_istat_files, list_col_exc_dic, list_col_type_dic, dic_istat_columns_fix, sql_drop_table, list_primary_key_dic, sql_dir_tables, csv_sep)
+    process_files_to_sql(od_bdap_dir, list_bdap_files, list_col_exc_dic, list_col_type_dic, dic_bdap_columns_fix, sql_drop_table, list_primary_key_dic, sql_dir_tables, csv_sep)
     print()
     
     # Create the final SQL 

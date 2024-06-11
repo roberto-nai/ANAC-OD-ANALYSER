@@ -19,6 +19,9 @@ OD_ISTAT_COLUMNS_FIX:
 # BDAP
 OD_BDAP_DIR: open_data_bdap
 OD_BDAP_FILE: Anagrafe-Enti---Ente.csv
+# Fix Column names                                    # INPUT columns to be renamed
+OD_BDAP_COLUMNS_FIX:
+  "CF": cf_comune
 
 # CONFIGURATIONS
 CONF_COLS_EXCL_FILE: conf_cols_read_excluded.json     # INPUT file with columns to be excluded from reading of each CSV file (dataset)
