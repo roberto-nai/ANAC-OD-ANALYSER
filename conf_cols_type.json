@@ -20,5 +20,9 @@
     "Codice Comune formato alfanumerico":"object",
     "Id_Ente":"object",
     "CF":"object",
-    "PIva":"object"
+    "PIva":"object",
+    "cod_tipo_scelta_contraente":"object",
+    "cod_modalita_realizzazione":"object",
+    "tipo-scelta-contraente_codice":"object",
+    "modalita-realizzazione_codice":"object"
 }

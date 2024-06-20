@@ -33,7 +33,7 @@ conf_file_cols_exc = str(yaml_config["CONF_COLS_EXCL_FILE"]) # JSON
 conf_file_cols_type = str(yaml_config["CONF_COLS_TYPE_FILE"]) # JSON
 conf_file_primary_keys = str(yaml_config["CONF_PRIMARY_KEYS_FILE"]) # JSON
 conf_file_foreign_keys = str(yaml_config["CONF_FOREIGN_KEYS_FILE"]) # JSON
-conf_file_table_names = str(yaml_config["CONF_TABLES_ENG"]) # JSON
+conf_file_table_eng_names = str(yaml_config["CONF_TABLES_ENG"]) # JSON
 sql_dir_tables = str(yaml_config["SQL_DIR_TABLES"])
 sql_drop_table = bool(yaml_config["SQL_DROP_TABLE"])
 sql_file_type = str(yaml_config["SQL_FILE_TYPE"])
@@ -41,13 +41,14 @@ db_name_drop = bool(yaml_config["SQL_DROP_DB"])
 
 # OUTPUT
 sql_dir_db = str(yaml_config["SQL_DIR_DB"]) # output
+sql_dir_import_db = str(yaml_config["SQL_DIR_TABLES_IMPORT"]) # output
 db_name = str(yaml_config["SQL_DB_NAME"]) # output
 
 script_path, script_name = script_info(__file__)
 
 ### FUNCTIONS ###
 
-def process_files_to_sql(od_dir: str, list_od_files: list, list_col_exc_dic: list, list_col_type_dic:list, dict_rename_col:dict, sql_drop_table: bool, list_primary_key_dic:list, sql_dir_tables:str, csv_sep: str = ";") -> None:
+def process_files_to_sql(od_dir: str, list_od_files: list, list_col_exc_dic: list, list_col_type_dic:list, dict_rename_col:dict, sql_drop_table: bool, list_primary_key_dic:list, sql_dir_tables:str, sql_dir_import_tables:str, list_tables_eng_dic:dict, csv_sep: str = ";") -> None:
     """
     Processes a list of files, excluding specified columns, and creates SQL table files.
 
@@ -60,6 +61,8 @@ def process_files_to_sql(od_dir: str, list_od_files: list, list_col_exc_dic: lis
         sql_drop_table (bool): Flag indicating whether to include a DROP TABLE statement in the SQL.
         list_primary_key_dic (list): List of dictionaries with primary key columns for each file.
         sql_dir_tables (str): Directory where the generated SQL files will be saved.
+        sql_dir_import_db (str): Directory with CSV cleaned and with ENG name to be imported in the database.
+        list_tables_eng_dic (dict): Dictionary with ENG table names.
         csv_sep (str): Separator used in the CSV files. Default is ';'.
 
     Returns:
@@ -72,6 +75,15 @@ def process_files_to_sql(od_dir: str, list_od_files: list, list_col_exc_dic: lis
         print("File:", file_od)
         file_path = Path(file_od)
         file_stem = file_path.stem # get the name without extension
+        
+        # Create the table name (in ITA)
+        table_name = file_stem.removesuffix("_csv")
+        table_name_clean = table_name.replace("-","_")
+        print("Table ITA:", table_name_clean)
+
+        # Get table name in ENG
+        table_name_eng = list_tables_eng_dic[table_name_clean]
+        print("Table ENG:", table_name_eng)
 
         # Get the columns excluded from the configuration list
         list_col_exc = get_values_from_dict_list(list_col_exc_dic, file_od)
@@ -79,8 +91,13 @@ def process_files_to_sql(od_dir: str, list_od_files: list, list_col_exc_dic: lis
         print("Columns excluded from the dataframe:", list_col_exc_len)
         
         # Read the file (dataset)
-        df_od = df_read_csv(od_dir, file_od, list_col_exc, list_col_type_dic, 1, csv_sep) # read just one row, no needed for SQL
-        print()
+        df_od = df_read_csv(od_dir, file_od, list_col_exc, list_col_type_dic, None, csv_sep) # read just one row, no needed for SQL
+
+        # Save the dataframe file in ENG name and without the columns excluded
+        print("> Saving CSV - table file (in ENG) for MySQL import")
+        path_table_eng = Path(sql_dir_import_db) / f"{table_name_eng.upper()}.csv"
+        print("Path:", path_table_eng)
+        df_od.to_csv(path_table_eng, index=False, sep = csv_sep)
 
         # Checks whether each key is a column present in the DataFrame (therefore to be renamed)
         if dict_rename_col is not None:
@@ -90,8 +107,6 @@ def process_files_to_sql(od_dir: str, list_od_files: list, list_col_exc_dic: lis
 
         # Create the SQL
         print("> Creating SQL - table file")
-        table_name = file_stem.removesuffix("_csv")
-        table_name_clean = table_name.replace("-","_")
         sql_db_file = f"{table_name_clean}.sql"
         # print(list_col_key_dic) # debug
         list_p_key = get_values_from_dict_list(list_primary_key_dic, file_od) # get the key list by file name 
@@ -105,6 +120,39 @@ def process_files_to_sql(od_dir: str, list_od_files: list, list_col_exc_dic: lis
         print("-"*3)
     print()
 
+def create_sql_load_commands(folder_path: str, output_file:str, extension: str = "csv") -> None:
+    """
+    Creates SQL LOAD DATA INFILE commands for each file with the given extension in the specified folder and writes them to a file named import_data.sql.
+
+    Parameters:
+        folder_path (str): The path to the folder containing the files.
+        output_file (str): The file name with import commands results.
+        extension (str): The file extension to search for (e.g., 'csv').
+
+    Returns:
+        None
+    """
+    folder = Path(folder_path)
+    sql_commands = []
+    
+    for file in folder.glob(f"*.{extension}"):
+        table_name = file.stem
+        command = f"""
+                LOAD DATA INFILE '{file.name}'
+                INTO TABLE {table_name}
+                FIELDS TERMINATED BY ','
+                ENCLOSED BY '"'
+                LINES TERMINATED BY '\\n'
+                IGNORE 1 LINES;
+                """
+        sql_commands.append(command)
+    
+    sql_script = "\n".join(sql_commands)
+    
+    path_out = folder / output_file
+    print("Import file ")
+    with open(path_out, "w") as sql_file:
+        sql_file.write(sql_script)
 
 ### MAIN ###
 def main():
@@ -119,6 +167,7 @@ def main():
     print(">> Preparing output directories")
     check_and_create_directory(sql_dir_tables)
     check_and_create_directory(sql_dir_db)
+    check_and_create_directory(sql_dir_import_db)
     print()
 
     # ANAC OD
@@ -151,7 +200,7 @@ def main():
     list_primary_key_dic = json_to_list_dict(conf_file_primary_keys)
     list_foreign_key_dic = json_to_list_dict(conf_file_foreign_keys)
     list_col_type_dic = json_to_sorted_dict(conf_file_cols_type)
-    list_tables_end_dic = json_to_sorted_dict(conf_file_table_names)
+    list_tables_eng_dic = json_to_sorted_dict(conf_file_table_eng_names)
 
     # print(list_col_exc_dic) # debug
     # print(list_col_type_dic) # debug
@@ -164,9 +213,10 @@ def main():
     print()
 
     print(">> Creating SQL files")
-    process_files_to_sql(od_anac_dir, list_od_files, list_col_exc_dic, list_col_type_dic, None, sql_drop_table, list_primary_key_dic, sql_dir_tables, csv_sep)
-    process_files_to_sql(od_istat_dir, list_istat_files, list_col_exc_dic, list_col_type_dic, dic_istat_columns_fix, sql_drop_table, list_primary_key_dic, sql_dir_tables, csv_sep)
-    process_files_to_sql(od_bdap_dir, list_bdap_files, list_col_exc_dic, list_col_type_dic, dic_bdap_columns_fix, sql_drop_table, list_primary_key_dic, sql_dir_tables, csv_sep)
+    
+    process_files_to_sql(od_anac_dir, list_od_files, list_col_exc_dic, list_col_type_dic, None, sql_drop_table, list_primary_key_dic, sql_dir_tables, sql_dir_import_db, list_tables_eng_dic, csv_sep)
+    process_files_to_sql(od_istat_dir, list_istat_files, list_col_exc_dic, list_col_type_dic, dic_istat_columns_fix, sql_drop_table, list_primary_key_dic, sql_dir_tables, sql_dir_import_db, list_tables_eng_dic, csv_sep)
+    process_files_to_sql(od_bdap_dir, list_bdap_files, list_col_exc_dic, list_col_type_dic, dic_bdap_columns_fix, sql_drop_table, list_primary_key_dic, sql_dir_tables, sql_dir_import_db, list_tables_eng_dic, csv_sep)
     print()
     
     # Create the final SQL 
@@ -223,8 +273,8 @@ def main():
             fp.write(sql_string)
     
     # 5) Add tables in english
-    print(list_tables_end_dic)
-    rename_statements = [f"RENAME TABLE {old_name} TO {new_name.upper()};" for old_name, new_name in list_tables_end_dic.items()]
+    print(list_tables_eng_dic)
+    rename_statements = [f"RENAME TABLE {old_name} TO {new_name.upper()};" for old_name, new_name in list_tables_eng_dic.items()]
     with open(path_out, "a") as fp:
         for rename_s in rename_statements:
             fp.write(rename_s + "\n")
@@ -232,6 +282,10 @@ def main():
     print()
     print("Final database SQL file to be imported in MySQL in:", path_out)
     print()
+
+    # Creating import file
+    print(">> Creating import files")
+    create_sql_load_commands(sql_dir_import_db, "_import_script.sql", "csv")
 
     # Program end
     end_time = datetime.now().replace(microsecond=0)

@@ -38,6 +38,7 @@ SQL_DIR_TABLES: sql_tables
 SQL_DROP_TABLE: True
 SQL_DROP_DB: True
 SQL_FILE_TYPE: sql
+SQL_DIR_TABLES_IMPORT: sql_tables_import              # Directory with cleaned CSVs to be imported in MySQL and sample import script
 
 # STATS
 OD_STATS_DIR: stats                                   # OUTPUT directory
